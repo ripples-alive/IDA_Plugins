@@ -87,7 +87,7 @@ class hexrays_callback_info(object):
             
     def highlight_bracket2(self, ps, pos_brach, xpos, ypos):
         ln = ps[ypos].line[:]
-        if (self.highl_brack.has_key(ypos) == False):
+        if ypos not in self.highl_brack:
             self.clearbracket(ps, True)
             self.highl_brack[ypos] = ln
         else:
@@ -209,7 +209,7 @@ class hexrays_callback_info(object):
                 xpos = pos.x
                 #print "cursor click %d %d %d" % (pos.x, pos.y, pos.lnnum)
 
-                if self.highlights.has_key(ypos):
+                if ypos in self.highlights:
                     return 0
                 #print "5"
 
@@ -267,7 +267,7 @@ class hexrays_callback_info(object):
                         #print "j:", j
                         ln = idaapi.tag_remove(ps[j].line)
                         if ln.find(bracechar) == idx:
-                            if not(self.highlights.has_key(j)):
+                            if j not in self.highlights:
                                 self.highlights[j] = ps[j].bgcolor
                             #ps[j].line = ps[j].line.replace(bracechar,
                             #idaapi.COLSTR("\x04"+bracechar+"\x04", "\x27"))
@@ -309,7 +309,7 @@ class HexHLightPlugin_t(idaapi.plugin_t):
             if not idaapi.install_hexrays_callback(hexlight_cb):
             #    print "could not install hexrays_callback"
                 return idaapi.PLUGIN_SKIP
-            print "Hexlight plugin installed Mod by Snow"
+            # print "Hexlight plugin installed Mod by Snow"
             addon = idaapi.addon_info_t()
             addon.id = "milan.bohacek.hexlight"
             addon.name = "Hexlight"
